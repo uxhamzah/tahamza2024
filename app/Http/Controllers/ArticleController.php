@@ -53,13 +53,13 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
-        Validator::make($request->all(),[
+        Validator::make($request->all(), [
             'image' => 'image|mimes:jpeg,png,jpg,webp|max:5120',
             'title' => 'required|unique:articles',
             'body' => 'required',
             'status' => 'required',
             'writer' => 'required',
-        ],$this->messages)->validate();
+        ], $this->messages)->validate();
 
         // check keywords value
         if ($request->keywords !== null) {
@@ -71,9 +71,10 @@ class ArticleController extends Controller
         // check images value
         $image_name = '';
         if ($request->image != null) {
-            $image_name = Str::of($request->title)->slug('-').".".$request->image->extension();
+            $image_name = Str::of($request->title)->slug('-') . "." . $request->image->extension();
             $request->image->storeAs(
-                'public/articles', $image_name
+                'public/articles',
+                $image_name
             );
         }
 
@@ -97,9 +98,8 @@ class ArticleController extends Controller
     public function slug(Article $article)
     {
         // count + 1 viewcount every goes to this route
-        if(Auth::user()->hasRole('user'))
-        {
-            $viewcount = $article->viewcount+=1;
+        if (Auth::user()->hasRole('user')) {
+            $viewcount = $article->viewcount += 1;
             $article->update([
                 'viewcount' => $viewcount
             ]);
@@ -131,13 +131,13 @@ class ArticleController extends Controller
      */
     public function update(Request $request, Article $article)
     {
-        Validator::make($request->all(),[
+        Validator::make($request->all(), [
             'image' => 'image|mimes:jpeg,png,jpg,webp|max:5120',
             'title' => 'required',
             'body' => 'required',
             'status' => 'required',
             'writer' => 'required',
-        ],$this->messages)->validate();
+        ], $this->messages)->validate();
 
         // check keywords value
         if ($request->keywords !== null) {
@@ -151,13 +151,14 @@ class ArticleController extends Controller
         if ($request->image != null) {
             // remove old file
             if ($article->images !== '') {
-                Storage::delete('public/articles/'.$article->images);
+                Storage::delete('public/articles/' . $article->images);
             }
 
             // upload new file
-            $image_name = Str::of($request->title)->slug('-').".".$request->image->extension();
+            $image_name = Str::of($request->title)->slug('-') . "." . $request->image->extension();
             $request->image->storeAs(
-                'public/articles', $image_name
+                'public/articles',
+                $image_name
             );
             // update article image
             $article->update([

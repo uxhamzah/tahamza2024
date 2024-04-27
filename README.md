@@ -57,7 +57,7 @@ Bagi para pakar kesehatan mental, termasuk psikolog dan psikiater, website ini m
   <tr>
   <tr>
     <td>1</td>
-    <td>kristin@gmail.com</td>
+    <td>dini@gmail.com</td>
     <td>Pikolong123</td>
   </tr>
 </table>
